@@ -4,6 +4,31 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 
+var com = require("serialport")
+var EEm = require('events').EventEmitter
+var emitter = new EEm()
+
+const PORT = "/dev/ttyACM0"
+
+var serialPort = new com.SerialPort(PORT, {
+    baudrate: 9600,
+    parser: com.parsers.readline('\r\n')
+})
+
+serialPort.on('open',function() {
+	console.log('Port open')
+	emitter.on('open', function(){
+		serialPort.write('m'+'\n')
+	})
+	emitter.on('close', function(){
+		serialPort.write('m'+'\n')
+	})
+})
+
+serialPort.on('data', function(data) {
+	console.log(data);
+});
+
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -28,9 +53,11 @@ app.listen(3000, () => {
 })
 
 function openShower(){
-	console.log("opening")	
+	console.log("opening")
+	emitter.emit('open');
 }
 
 function closeShower(){
 	console.log("closing")
+	emitter.emit('close');
 }
