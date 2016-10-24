@@ -18,10 +18,10 @@ var serialPort = new com.SerialPort(PORT, {
 serialPort.on('open',function() {
 	console.log('Port open')
 	emitter.on('open', function(){
-		serialPort.write('open'+'\n')
+		serialPort.write('ON'+'\n')
 	})
 	emitter.on('close', function(){
-		serialPort.write('close'+'\n')
+		serialPort.write('OFF'+'\n')
 	})
 })
 
