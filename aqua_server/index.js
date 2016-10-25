@@ -10,7 +10,7 @@ var emitter = new EEm()
 
 const PORT = "/dev/ttyACM0"
 
-var serialPort = new com.SerialPort(PORT, {
+var serialPort = new com(PORT, {
     baudrate: 9600,
     parser: com.parsers.readline('\r\n')
 })
